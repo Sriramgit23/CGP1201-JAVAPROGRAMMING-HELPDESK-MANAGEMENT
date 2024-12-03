@@ -1,0 +1,83 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+class Ticket {
+    private int id;
+    private boolean created;
+    public Ticket(int id) {
+        this.id = id;
+        this.created = true;
+    }
+    public boolean isCreated() {
+        return created;
+    }
+    public int getId() {
+        return id;
+    }
+}
+public class HelpDesk {
+    private static Map<String, String> users = new HashMap<>();
+    private static Map<Integer, Ticket> tickets = new HashMap<>();
+    private static Scanner scanner = new Scanner(System.in);
+    public static void main(String[] args) {
+        while (true) {
+            showOptions();
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+            if (choice == -1) {
+                System.out.println("Exiting Help Desk System...");
+                break;
+            }
+            switch (choice) {
+                case 1:
+                    addUser();
+                    break;
+                case 2: 
+                    createTicket();
+                    break;
+                case 3: 
+                    viewTicketStatus();
+                    break;
+                default: 
+                    System.out.println("Invalid choice! Please enter a valid option.");
+            }
+        }
+        scanner.close();
+    }
+    private static void showOptions() {
+        System.out.println("\nOptions:");
+        System.out.println("1. Add User");
+        System.out.println("2. Create Ticket");
+        System.out.println("3. View Ticket Status");
+        System.out.println("-1. Exit");
+    }
+    private static void addUser() {
+        System.out.print("Enter user name: ");
+        String userName = scanner.nextLine();
+        users.put(userName, userName);
+        System.out.println("User added: " + userName);
+    }
+    private static void createTicket() {
+        System.out.print("Enter ticket ID: ");
+        int ticketId = scanner.nextInt();
+        scanner.nextLine(); 
+        if (tickets.containsKey(ticketId)) {
+            System.out.println("Ticket ID already exists. Please choose a different ID.");
+        } else {
+            tickets.put(ticketId, new Ticket(ticketId)); 
+            System.out.println("Ticket created with ID: " + ticketId);
+        }
+    }
+    private static void viewTicketStatus() {
+        System.out.print("Enter ticket ID to check: ");
+        int ticketId = scanner.nextInt();
+        scanner.nextLine();
+        Ticket ticket = tickets.get(ticketId);
+        if (ticket != null) {
+            System.out.println("Ticket ID: " + ticket.getId() + ", Status: " + (ticket.isCreated() ? "Created" : "Not Created"));
+        } else {
+            System.out.println("Ticket not found.");
+        }
+    }
+}
